@@ -105,22 +105,23 @@ const gameFlow = (() => {
   boardArray.forEach(elem => {
     if (elem.textContent == "") {
       elem.addEventListener('click', () => {
-        elem.textContent = `${currentPlayer.symbol}`;
+        console.log(currentPlayer.symbol)
+        elem.innerHTML = `<p>${currentPlayer.symbol}</p>`;
         gameboard.updateBoard(elem.id, currentPlayer.symbol);
-        playerOne.moveNumber++;
-        playerTwo.moveNumber++;
+        players[0].moveNumber++;
+        players[1].moveNumber++;
       })
     } else {
       elem.removeEventListener('click', () => {})
     }
-  })
+  });
 }
 
 //   const runGame = () => {
 //     getPlayerInfo();
 //     while (!gameWon()) {
 //   }
-  return {getEvents};
+  return {getEvents, getPlayerInfo};
 })();
 
 // Player object
@@ -128,6 +129,7 @@ const Player = (name, symbol, moveNumber) => {
   return { name, symbol, moveNumber }
 };
 
+gameFlow.getPlayerInfo();
 gameFlow.getEvents();
 // gameFlow.runGame();
 

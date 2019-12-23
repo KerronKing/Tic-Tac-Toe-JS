@@ -53,28 +53,6 @@ const gameFlow = (() => {
     players.unshift(obj1, obj2);
   };
 
-  const getPlayerInfo = () => {
-
-    const playerInfo = document.forms['player-input'];
-    playerInfo.addEventListener('submit', function(e){
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(playerInfo).entries());
-    addPlayer(data['name-1'], data['name-2']);
-    runGame(players);
-    playerInfo.reset();
-    });
-  };
-
-  const currentPlayer = (array) => {
-    var playerOne = array[0];
-
-    if (playerOne.moveNumber % 2 == 1) {
-      return Object.assign({}, array[0]);
-    } else {
-      return Object.assign({}, array[1]);
-    };
-  }
-
   const gameWon = (array) => {
     currentPlayer(array);
     const winningPositions = [
@@ -102,7 +80,7 @@ const gameFlow = (() => {
     const boardArray = Array.from(boardElements);
     boardArray.forEach(elem => {
       if (elem.innerHTML != "") {
-        counter++
+        counter++;
         if ((counter == 9) && !gameWon(players)) {
           return true;
         }
@@ -115,39 +93,51 @@ const gameFlow = (() => {
     const boardElements = document.getElementById('board').children;
     const boardArray = Array.from(boardElements);
     boardArray.forEach(elem => {
-    let clickEvent = function () {
-      currentPlayer(players);
-      elem.innerHTML = `${currentPlayer(players).symbol}`;
-      gameboard.updateBoard(elem.id, currentPlayer(players).symbol);
-      elem.removeEventListener('click', clickEvent, false);
-      players[0].moveNumber++;
-      players[1].moveNumber++;
-    }
+      const clickEvent = function () {
+        currentPlayer(players);
+        elem.innerHTML = `${currentPlayer(players).symbol}`;
+        gameboard.updateBoard(elem.id, currentPlayer(players).symbol);
+        elem.removeEventListener('click', clickEvent, false);
+        players[0].moveNumber++;
+        players[1].moveNumber++;
+        if (gameWon(players)) {
+          let alerts = document.getElementById('alerts');
+          alerts.innerHTML = `${currentPlayer(players).name} is the winner`;
+        } else if (gameDrawn()) {
+          let alerts = document.getElementById('alerts');
+          alerts.innerHTML = "It's a drawn game!";
+        } else {
+          alerts.innerHTML = `${currentPlayer(players).name}'s turn`;
+        }
+      }
       if (elem.innerHTML == "") {
         elem.addEventListener('click', clickEvent, false);
       }
     });
   }
+  const getPlayerInfo = () => {
 
-  const runGame = (array) => {
-    let counter = 9;
-    for (let i = 0; i < counter; i++) {
-      getEvents();
-      currentPlayer(array);
-      console.log(currentPlayer(array));
-      if (gameWon(players)) {
-        let alerts = document.getElementById('alerts');
-        alerts.innerHTML = `${currentPlayer(array).name} is the winner`;
-      } else if (gameDrawn()) {
-        alerts.innerHTML = "It's a drawn game!";
-      } else {
-        alerts.innerHTML = `${currentPlayer(array).name}'s turn`;
-        counter--;
-      }
-      counter--;
-    }
+    const playerInfo = document.forms['player-input'];
+    playerInfo.addEventListener('submit', function(e){
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(playerInfo).entries());
+    addPlayer(data['name-1'], data['name-2']);
+    getEvents();
+    playerInfo.reset();
+    });
+  };
+
+  const currentPlayer = (array) => {
+    var playerOne = array[0];
+
+    if (playerOne.moveNumber % 2 == 1) {
+      return Object.assign({}, array[0]);
+    } else {
+      return Object.assign({}, array[1]);
+    };
   }
-  return {runGame, getPlayerInfo, currentPlayer};
+
+  return {getPlayerInfo};
 })();
 
 // Player object
@@ -156,9 +146,6 @@ const Player = (name, symbol, moveNumber) => {
 };
 
 gameFlow.getPlayerInfo();
-
-
-
 
 
 // Next steps:

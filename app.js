@@ -59,10 +59,66 @@ const gameFlow = (() => {
     playerInfo.addEventListener('submit', function(e){
     e.preventDefault();
     const data = Object.fromEntries(new FormData(playerInfo).entries());
-    addPlayer(data[0], data[1]);
-    console.log('test');
+    addPlayer(data['name-1'], data['name-2']);
+    console.log(data);
+    playerInfo.reset();
     });
   };
+
+  const currentPlayer = () => {
+    var playerOne = players[0];
+    var playerTwo = players[1];
+
+    if (playerOne.moveNumber % 2 == 1) {
+      var currentPlayer = playerOne;
+    } else {
+      var currentPlayer = playerTwo;
+    }
+    return currentPlayer;
+  }
+
+  const gameWon = () => {
+    var player = currentPlayer();
+    const winningPositions = [
+      [playArea[0][0], playArea[0][1], playArea[0][2]],
+      [playArea[1][0], playArea[1][1], playArea[1][2]],
+      [playArea[2][0], playArea[2][1], playArea[2][2]],
+      [playArea[0][0], playArea[1][0], playArea[2][0]],
+      [playArea[0][1], playArea[1][1], playArea[2][1]],
+      [playArea[0][2], playArea[1][2], playArea[2][2]],
+      [playArea[0][0], playArea[1][1], playArea[2][2]],
+      [playArea[0][2], playArea[1][1], playArea[2][0]]
+    ]
+    var final = winningPositions.map(elem => elem.filter(x => x != player.symbol));
+    for (let i = 0; i < final.length; i++) {
+      if (final[i].length == 0) {
+        return true;
+      }
+    }
+  return false;
+  }
+
+  const runGame = () => {
+    getPlayerInfo();
+    while (!gameWon()) {
+      currentPlayer();
+      const boardElements = document.getElementById('board').children;
+      boardElements.forEach(elem => {
+        if (elem.textContent == "") {
+          elem.addEventListener('click', () => {
+            elem.textContent = `${currentPlayer.symbol}`;
+            gameboard.updateBoard(elem.id, currentPlayer.symbol);
+            playerOne.moveNumber++;
+            playerTwo.moveNumber++;
+          })
+        } else {
+          elem.removeEventListener('click', () => {})
+        }
+      })
+    }
+  }
+  return {runGame};
+})();
 
   // const gameWon = () => {
 

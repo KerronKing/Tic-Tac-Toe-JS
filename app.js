@@ -78,7 +78,7 @@ const gameFlow = (() => {
   }
 
   const gameWon = () => {
-    let player = currentPlayer(players);
+    currentPlayer(players);
     const winningPositions = [
       [gameboard.playArea[0][0], gameboard.playArea[0][1], gameboard.playArea[0][2]],
       [gameboard.playArea[1][0], gameboard.playArea[1][1], gameboard.playArea[1][2]],
@@ -89,7 +89,7 @@ const gameFlow = (() => {
       [gameboard.playArea[0][0], gameboard.playArea[1][1], gameboard.playArea[2][2]],
       [gameboard.playArea[0][2], gameboard.playArea[1][1], gameboard.playArea[2][0]]
     ]
-    let final = winningPositions.map(elem => elem.filter(x => x != player.symbol));
+    let final = winningPositions.map(elem => elem.filter(x => x != currentPlayer.symbol));
     for (let i = 0; i < final.length; i++) {
       if (final[i].length == 0) {
         return true;
@@ -98,26 +98,29 @@ const gameFlow = (() => {
   return false;
   }
 
-  const runGame = () => {
-    getPlayerInfo();
-    while (!gameWon()) {
-      currentPlayer(players);
-      const boardElements = document.getElementById('board').children;
-      boardElements.forEach(elem => {
-        if (elem.textContent == "") {
-          elem.addEventListener('click', () => {
-            elem.textContent = `${currentPlayer.symbol}`;
-            gameboard.updateBoard(elem.id, currentPlayer.symbol);
-            playerOne.moveNumber++;
-            playerTwo.moveNumber++;
-          })
-        } else {
-          elem.removeEventListener('click', () => {})
-        }
+  const getEvents = () => {
+  currentPlayer(players);
+  const boardElements = document.getElementById('board').children;
+  const boardArray = Array.from(boardElements);
+  boardArray.forEach(elem => {
+    if (elem.textContent == "") {
+      elem.addEventListener('click', () => {
+        elem.textContent = `${currentPlayer.symbol}`;
+        gameboard.updateBoard(elem.id, currentPlayer.symbol);
+        playerOne.moveNumber++;
+        playerTwo.moveNumber++;
       })
+    } else {
+      elem.removeEventListener('click', () => {})
     }
-  }
-  return {runGame};
+  })
+}
+
+//   const runGame = () => {
+//     getPlayerInfo();
+//     while (!gameWon()) {
+//   }
+  return {getEvents};
 })();
 
 // Player object
@@ -125,7 +128,8 @@ const Player = (name, symbol, moveNumber) => {
   return { name, symbol, moveNumber }
 };
 
-gameFlow.runGame();
+gameFlow.getEvents();
+// gameFlow.runGame();
 
 // Next steps:
 

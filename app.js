@@ -1,5 +1,5 @@
 // Global Array to store player objects
-const players = [];
+let players = [{name: "default", symbol:"?", moveNumber: 0}];
 
 // Game-board module
 const gameboard = (() => {
@@ -50,7 +50,7 @@ const gameFlow = (() => {
 
   const obj1 = Player(name1, 'X', 1);
   const obj2 = Player(name2, '0', 0);
-    players.push(obj1, obj2);
+    players.unshift(obj1, obj2);
   };
 
   const getPlayerInfo = () => {
@@ -65,9 +65,9 @@ const gameFlow = (() => {
     });
   };
 
-  const currentPlayer = () => {
-    var playerOne = players[0];
-    var playerTwo = players[1];
+  const currentPlayer = (array) => {
+    var playerOne = array[0];
+    var playerTwo = array[1];
 
     if (playerOne.moveNumber % 2 == 1) {
       var currentPlayer = playerOne;
@@ -78,18 +78,18 @@ const gameFlow = (() => {
   }
 
   const gameWon = () => {
-    var player = currentPlayer();
+    let player = currentPlayer(players);
     const winningPositions = [
-      [playArea[0][0], playArea[0][1], playArea[0][2]],
-      [playArea[1][0], playArea[1][1], playArea[1][2]],
-      [playArea[2][0], playArea[2][1], playArea[2][2]],
-      [playArea[0][0], playArea[1][0], playArea[2][0]],
-      [playArea[0][1], playArea[1][1], playArea[2][1]],
-      [playArea[0][2], playArea[1][2], playArea[2][2]],
-      [playArea[0][0], playArea[1][1], playArea[2][2]],
-      [playArea[0][2], playArea[1][1], playArea[2][0]]
+      [gameboard.playArea[0][0], gameboard.playArea[0][1], gameboard.playArea[0][2]],
+      [gameboard.playArea[1][0], gameboard.playArea[1][1], gameboard.playArea[1][2]],
+      [gameboard.playArea[2][0], gameboard.playArea[2][1], gameboard.playArea[2][2]],
+      [gameboard.playArea[0][0], gameboard.playArea[1][0], gameboard.playArea[2][0]],
+      [gameboard.playArea[0][1], gameboard.playArea[1][1], gameboard.playArea[2][1]],
+      [gameboard.playArea[0][2], gameboard.playArea[1][2], gameboard.playArea[2][2]],
+      [gameboard.playArea[0][0], gameboard.playArea[1][1], gameboard.playArea[2][2]],
+      [gameboard.playArea[0][2], gameboard.playArea[1][1], gameboard.playArea[2][0]]
     ]
-    var final = winningPositions.map(elem => elem.filter(x => x != player.symbol));
+    let final = winningPositions.map(elem => elem.filter(x => x != player.symbol));
     for (let i = 0; i < final.length; i++) {
       if (final[i].length == 0) {
         return true;
@@ -101,7 +101,7 @@ const gameFlow = (() => {
   const runGame = () => {
     getPlayerInfo();
     while (!gameWon()) {
-      currentPlayer();
+      currentPlayer(players);
       const boardElements = document.getElementById('board').children;
       boardElements.forEach(elem => {
         if (elem.textContent == "") {

@@ -3,8 +3,44 @@ const players = [];
 
 // Game-board module
 const gameboard = (() => {
-  let playArea = [];
-  return { playArea };
+  let playArea = [
+    ["", "", ""],
+    ["", "", ""],
+    ["", "", ""]
+  ];
+  
+  const updateBoard = (id, symbol) => {
+    switch (id) {
+      case "space-1":
+        playArea[0][0] = symbol;
+        break;
+      case "space-2":
+        playArea[0][1] = symbol;
+        break;
+      case "space-3":
+        playArea[0][2] = symbol;
+        break;
+      case "space-4":
+        playArea[1][0] = symbol;
+        break;
+      case "space-5":
+        playArea[1][1] = symbol;
+        break;
+      case "space-6":
+        playArea[1][2] = symbol;
+        break;
+      case "space-7":
+        playArea[2][0] = symbol;
+        break;
+      case "space-8":
+        playArea[2][1] = symbol;
+        break;
+      case "space-9":
+        playArea[2][2] = symbol;
+        break;
+    }
+  }
+  return { playArea, updateBoard };
 })();
 
 // Game-flow module

@@ -8,7 +8,7 @@ const gameboard = (() => {
     ["", "", ""],
     ["", "", ""]
   ];
-  
+
   const updateBoard = (id, symbol) => {
     switch (id) {
       case "space-1":
@@ -136,5 +136,5 @@ gameFlow.runGame();
 // runGame function - goes in gameFlow module and is the only (probable) global function call
 
 
-// playerturn function updates gameboard.playArea in the position equal to the number in 
+// playerturn function updates gameboard.playArea in the position equal to the number in
 // div ID of the board. eg. #space-1.

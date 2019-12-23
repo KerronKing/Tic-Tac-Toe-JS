@@ -65,16 +65,16 @@ const gameFlow = (() => {
     });
   };
 
-  const currentPlayer = (array) => {
+  let currentPlayer = (array) => {
     var playerOne = array[0];
     var playerTwo = array[1];
 
     if (playerOne.moveNumber % 2 == 1) {
-      var currentPlayer = playerOne;
+      var current = playerOne;
     } else {
-      var currentPlayer = playerTwo;
+      var current = playerTwo;
     }
-    return currentPlayer;
+    return current;
   }
 
   const gameWon = () => {
@@ -89,7 +89,7 @@ const gameFlow = (() => {
       [gameboard.playArea[0][0], gameboard.playArea[1][1], gameboard.playArea[2][2]],
       [gameboard.playArea[0][2], gameboard.playArea[1][1], gameboard.playArea[2][0]]
     ]
-    let final = winningPositions.map(elem => elem.filter(x => x != currentPlayer.symbol));
+    let final = winningPositions.map(elem => elem.filter(x => x != currentPlayer(players).symbol));
     for (let i = 0; i < final.length; i++) {
       if (final[i].length == 0) {
         return true;
@@ -99,23 +99,23 @@ const gameFlow = (() => {
   }
 
   const getEvents = () => {
-  currentPlayer(players);
-  const boardElements = document.getElementById('board').children;
-  const boardArray = Array.from(boardElements);
-  boardArray.forEach(elem => {
-    if (elem.textContent == "") {
-      elem.addEventListener('click', () => {
-        console.log(currentPlayer.symbol)
-        elem.innerHTML = `<p>${currentPlayer.symbol}</p>`;
-        gameboard.updateBoard(elem.id, currentPlayer.symbol);
-        players[0].moveNumber++;
-        players[1].moveNumber++;
-      })
-    } else {
-      elem.removeEventListener('click', () => {})
-    }
-  });
-}
+    currentPlayer(players);
+    const boardElements = document.getElementById('board').children;
+    const boardArray = Array.from(boardElements);
+    boardArray.forEach(elem => {
+      if (elem.textContent == "") {
+        elem.addEventListener('click', () => {
+          console.log(currentPlayer(players));
+          elem.innerHTML = `<p>${currentPlayer(players).symbol}</p>`;
+          gameboard.updateBoard(elem.id, currentPlayer(players).symbol);
+          players[0].moveNumber++;
+          players[1].moveNumber++;
+        })
+      } else {
+        elem.removeEventListener('click', () => {})
+      }
+    });
+  }
 
 //   const runGame = () => {
 //     getPlayerInfo();

@@ -120,32 +120,12 @@ const gameFlow = (() => {
   return {runGame};
 })();
 
-  // const gameWon = () => {
-
-  // }
-
-  // const playerTurn = () => {
-
-  //   while (!gameWon()) {
-  //     if (players.moveNumber % 2 == 1) {
-  //       const boardElements = document.getElementById('board').children;
-  //       boardElements.forEach(elem => {
-  //         elem.addEventListener('click', () => {
-  //           elem.textContent = `${players[i].symbol}`;
-  //         })
-  //       })
-  //     }
-  //   }
-  return {getPlayerInfo};
-})();
-
 // Player object
-const Player = (name, symbol) => {
-  let moveNumber = 0;
+const Player = (name, symbol, moveNumber) => {
   return { name, symbol, moveNumber }
 };
 
-gameFlow.getPlayerInfo();
+gameFlow.runGame();
 
 // Next steps:
 
@@ -154,3 +134,7 @@ gameFlow.getPlayerInfo();
 // Render textContent (appropriate player symbol) in the div that was clicked.
 // Add function to remove event listener if a game board div has text content already.
 // runGame function - goes in gameFlow module and is the only (probable) global function call
+
+
+// playerturn function updates gameboard.playArea in the position equal to the number in 
+// div ID of the board. eg. #space-1.

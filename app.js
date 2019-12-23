@@ -99,28 +99,27 @@ const gameFlow = (() => {
   }
 
   const getEvents = () => {
-    currentPlayer(players);
     const boardElements = document.getElementById('board').children;
     const boardArray = Array.from(boardElements);
     boardArray.forEach(elem => {
-      if (elem.textContent == "") {
-        elem.addEventListener('click', () => {
-          console.log(currentPlayer(players));
-          elem.innerHTML = `<p>${currentPlayer(players).symbol}</p>`;
-          gameboard.updateBoard(elem.id, currentPlayer(players).symbol);
-          players[0].moveNumber++;
-          players[1].moveNumber++;
-        })
-      } else {
-        elem.removeEventListener('click', () => {})
+    let clickEvent = function () {
+      currentPlayer(players);
+      elem.innerHTML = `${currentPlayer(players).symbol}`;
+      gameboard.updateBoard(elem.id, currentPlayer(players).symbol);
+      elem.removeEventListener('click', clickEvent, false);
+      players[0].moveNumber++;
+      players[1].moveNumber++;
+    }
+      if (elem.innerHTML == "") {
+        elem.addEventListener('click', clickEvent, false);
       }
     });
   }
 
-//   const runGame = () => {
-//     getPlayerInfo();
+  const runGame = () => {
+    getPlayerInfo();
 //     while (!gameWon()) {
-//   }
+  }
   return {getEvents, getPlayerInfo};
 })();
 

@@ -60,25 +60,23 @@ const gameFlow = (() => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(playerInfo).entries());
     addPlayer(data['name-1'], data['name-2']);
-    console.log(data);
+    runGame(players);
     playerInfo.reset();
     });
   };
 
-  let currentPlayer = (array) => {
+  const currentPlayer = (array) => {
     var playerOne = array[0];
-    var playerTwo = array[1];
 
     if (playerOne.moveNumber % 2 == 1) {
-      var current = playerOne;
+      return Object.assign({}, array[0]);
     } else {
-      var current = playerTwo;
-    }
-    return current;
+      return Object.assign({}, array[1]);
+    };
   }
 
-  const gameWon = () => {
-    currentPlayer(players);
+  const gameWon = (array) => {
+    currentPlayer(array);
     const winningPositions = [
       [gameboard.playArea[0][0], gameboard.playArea[0][1], gameboard.playArea[0][2]],
       [gameboard.playArea[1][0], gameboard.playArea[1][1], gameboard.playArea[1][2]],
@@ -89,13 +87,28 @@ const gameFlow = (() => {
       [gameboard.playArea[0][0], gameboard.playArea[1][1], gameboard.playArea[2][2]],
       [gameboard.playArea[0][2], gameboard.playArea[1][1], gameboard.playArea[2][0]]
     ]
-    let final = winningPositions.map(elem => elem.filter(x => x != currentPlayer(players).symbol));
+    let final = winningPositions.map(elem => elem.filter(x => x != currentPlayer(array).symbol));
     for (let i = 0; i < final.length; i++) {
       if (final[i].length == 0) {
         return true;
       }
     }
   return false;
+  }
+
+  const gameDrawn = () => {
+    let counter = 0;
+    const boardElements = document.getElementById('board').children;
+    const boardArray = Array.from(boardElements);
+    boardArray.forEach(elem => {
+      if (elem.innerHTML != "") {
+        counter++
+        if ((counter == 9) && !gameWon(players)) {
+          return true;
+        }
+      }
+    })
+    return false;
   }
 
   const getEvents = () => {
@@ -116,11 +129,25 @@ const gameFlow = (() => {
     });
   }
 
-  const runGame = () => {
-    getPlayerInfo();
-//     while (!gameWon()) {
+  const runGame = (array) => {
+    let counter = 9;
+    for (let i = 0; i < counter; i++) {
+      getEvents();
+      currentPlayer(array);
+      console.log(currentPlayer(array));
+      if (gameWon(players)) {
+        let alerts = document.getElementById('alerts');
+        alerts.innerHTML = `${currentPlayer(array).name} is the winner`;
+      } else if (gameDrawn()) {
+        alerts.innerHTML = "It's a drawn game!";
+      } else {
+        alerts.innerHTML = `${currentPlayer(array).name}'s turn`;
+        counter--;
+      }
+      counter--;
+    }
   }
-  return {getEvents, getPlayerInfo};
+  return {runGame, getPlayerInfo, currentPlayer};
 })();
 
 // Player object
@@ -129,8 +156,10 @@ const Player = (name, symbol, moveNumber) => {
 };
 
 gameFlow.getPlayerInfo();
-gameFlow.getEvents();
-// gameFlow.runGame();
+
+
+
+
 
 // Next steps:
 

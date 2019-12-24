@@ -49,12 +49,11 @@ const gameFlow = (() => {
   const addPlayer = (name1, name2) => {
 
   const obj1 = Player(name1, 'X', 1);
-  const obj2 = Player(name2, '0', 0);
+  const obj2 = Player(name2, 'O', 0);
     players.unshift(obj1, obj2);
   };
 
   const gameWon = (array) => {
-    currentPlayer(array);
     const winningPositions = [
       [gameboard.playArea[0][0], gameboard.playArea[0][1], gameboard.playArea[0][2]],
       [gameboard.playArea[1][0], gameboard.playArea[1][1], gameboard.playArea[1][2]],
@@ -65,12 +64,16 @@ const gameFlow = (() => {
       [gameboard.playArea[0][0], gameboard.playArea[1][1], gameboard.playArea[2][2]],
       [gameboard.playArea[0][2], gameboard.playArea[1][1], gameboard.playArea[2][0]]
     ]
-    let final = winningPositions.map(elem => elem.filter(x => x != currentPlayer(array).symbol));
-    for (let i = 0; i < final.length; i++) {
-      if (final[i].length == 0) {
+    let finalX = winningPositions.map(elem => elem.filter(x => x == "X"));
+    let finalO = winningPositions.map(elem => elem.filter(x => x == "O"));
+
+    for (let i = 0; i < finalX.length; i++) {
+      if (finalX[i].length == 3) {
+        return true;
+      } else if (finalO[i].length == 3) {
         return true;
       }
-    }
+    }  
   return false;
   }
 
@@ -100,6 +103,7 @@ const gameFlow = (() => {
         elem.removeEventListener('click', clickEvent, false);
         players[0].moveNumber++;
         players[1].moveNumber++;
+        console.log(gameDrawn(players));
         if (gameWon(players)) {
           let alerts = document.getElementById('alerts');
           alerts.innerHTML = `${currentPlayer(players).name} is the winner`;

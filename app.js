@@ -53,7 +53,7 @@ const gameFlow = (() => {
     players.unshift(obj1, obj2);
   };
 
-  const gameWon = (array) => {
+  const gameWon = () => {
     const winningPositions = [
       [gameboard.playArea[0][0], gameboard.playArea[0][1], gameboard.playArea[0][2]],
       [gameboard.playArea[1][0], gameboard.playArea[1][1], gameboard.playArea[1][2]],
@@ -84,11 +84,11 @@ const gameFlow = (() => {
     boardArray.forEach(elem => {
       if (elem.innerHTML != "") {
         counter++;
-        if ((counter == 9) && !gameWon(players)) {
-          return true;
-        }
       }
     })
+    if ((counter == 9) && !gameWon()) {
+      return true;
+    }
     return false;
   }
 
@@ -103,8 +103,8 @@ const gameFlow = (() => {
         elem.removeEventListener('click', clickEvent, false);
         players[0].moveNumber++;
         players[1].moveNumber++;
-        console.log(gameDrawn(players));
-        if (gameWon(players)) {
+        console.log(gameDrawn());
+        if (gameWon()) {
           let alerts = document.getElementById('alerts');
           alerts.innerHTML = `${currentPlayer(players).name} is the winner`;
         } else if (gameDrawn()) {

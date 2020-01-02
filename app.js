@@ -1,28 +1,6 @@
 // Global Array to store player objects
 let players = [{name: "default", symbol:"?", moveNumber: 0}];
 
-// Start/Re-start button
-
-const starter = document.getElementById('starter');
-starter.textContent = 'Start Game';
-
-if (!starter.clicked) {
-  starter.addEventListener('click', () => {
-    const input = document.getElementById('input');
-    const board = document.getElementById('board');
-    input.classList.remove('hidden');
-    board.classList.remove('hidden');
-    starter.textContent = 'Restart Game';
-  })
-} else {
-  starter.addEventListener('click', () => {
-
-  })
-}
-
-
-
-
 // Game-board module
 const gameboard = (() => {
   let playArea = [
@@ -114,6 +92,24 @@ const gameFlow = (() => {
     return false;
   }
 
+  const resetGame = () => {
+    let players = [{name: "default", symbol:"?", moveNumber: 0}];
+    let playArea = [
+      ["", "", ""],
+      ["", "", ""],
+      ["", "", ""]
+    ];
+
+    const boardElements = document.getElementById('board').children;
+    const boardArray = Array.from(boardElements);
+
+    boardArray.forEach(elem => {
+      elem.innerHTML = "";
+      elem.removeEventListener('click', clickEvent, false);
+    })
+    return [playArea, players];
+  }
+
   const getEvents = () => {
     const boardElements = document.getElementById('board').children;
     const boardArray = Array.from(boardElements);
@@ -163,7 +159,7 @@ const gameFlow = (() => {
     };
   }
 
-  return {getPlayerInfo};
+  return {getPlayerInfo, resetGame};
 })();
 
 // Player object
@@ -171,17 +167,31 @@ const Player = (name, symbol, moveNumber) => {
   return { name, symbol, moveNumber }
 };
 
+// Start/Re-start button
+
+const starter = document.getElementById('starter');
+starter.textContent = 'Start Game';
+
+const startGame = () => {
+  const input = document.getElementById('input');
+  const board = document.getElementById('board');
+  input.classList.remove('hidden');
+  board.classList.remove('hidden');
+  starter.textContent = 'Restart Game';
+  starter.removeEventListener('click', startGame, false);
+}
+
+const commence = () => {
+  if (starter.textContent == "Start Game") {
+    starter.addEventListener('click', startGame, false);
+  } else {
+    console.log('button was clicked');
+    starter.addEventListener('click', () => {
+      gameFlow.resetGame();
+      console.log('game reset, maybe?');
+    });
+  }
+}
+
+commence();
 gameFlow.getPlayerInfo();
-
-
-// Next steps:
-
-// Each div would have an event listener (click event) that saves an
-  // entry on the gameBoard array.
-// Render textContent (appropriate player symbol) in the div that was clicked.
-// Add function to remove event listener if a game board div has text content already.
-// runGame function - goes in gameFlow module and is the only (probable) global function call
-
-
-// playerturn function updates gameboard.playArea in the position equal to the number in
-// div ID of the board. eg. #space-1.

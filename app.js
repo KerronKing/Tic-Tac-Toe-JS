@@ -2,9 +2,7 @@
 let players = [];
 
 // Player object
-const Player = (name, symbol, moveNumber) => {
-  return { name, symbol, moveNumber }
-};
+const Player = (name, symbol, moveNumber) => ({ name, symbol, moveNumber });
 
 // Game-board module
 const gameboard = (() => {
@@ -69,11 +67,11 @@ const gameFlow = (() => {
   const addPlayer = (name1, name2) => {
     const obj1 = Player(name1, 'X', 1);
     const obj2 = Player(name2, 'O', 0);
-      players.unshift(obj1, obj2);
+    players.unshift(obj1, obj2);
 
-      if (players.length >= 2) {
-        players.length = 2;
-      }
+    if (players.length >= 2) {
+      players.length = 2;
+    }
   };
 
   const gameWon = () => {
@@ -85,35 +83,35 @@ const gameFlow = (() => {
       [gameboard.playArea[0][1], gameboard.playArea[1][1], gameboard.playArea[2][1]],
       [gameboard.playArea[0][2], gameboard.playArea[1][2], gameboard.playArea[2][2]],
       [gameboard.playArea[0][0], gameboard.playArea[1][1], gameboard.playArea[2][2]],
-      [gameboard.playArea[0][2], gameboard.playArea[1][1], gameboard.playArea[2][0]]
-    ]
-    let finalX = winningPositions.map(elem => elem.filter(x => x == 'X'));
-    let finalO = winningPositions.map(elem => elem.filter(x => x == 'O'));
+      [gameboard.playArea[0][2], gameboard.playArea[1][1], gameboard.playArea[2][0]],
+    ];
+    const finalX = winningPositions.map(elem => elem.filter(x => x === 'X'));
+    const finalO = winningPositions.map(elem => elem.filter(x => x === 'O'));
 
-    for (let i = 0; i < finalX.length; i++) {
-      if (finalX[i].length == 3) {
+    for (let i = 0; i < finalX.length; i += 1) {
+      if (finalX[i].length === 3) {
         return true;
-      } else if (finalO[i].length == 3) {
+      } else if (finalO[i].length === 3) {
         return true;
       }
     }
-  return false;
-  }
+    return false;
+  };
 
   const gameDrawn = () => {
     let counter = 0;
     const boardElements = document.getElementById('board').children;
     const boardArray = Array.from(boardElements);
-    boardArray.forEach(elem => {
-      if (elem.innerHTML != '') {
-        counter++;
+    boardArray.forEach((elem => {
+      if (elem.innerHTML !== '') {
+        counter += 1;
       }
-    })
-    if ((counter == 9) && !gameWon()) {
+    }));
+    if ((counter === 9) && !gameWon()) {
       return true;
     }
     return false;
-  }
+  };
 
   const resetGame = () => {
     players = [];
@@ -129,7 +127,7 @@ const gameFlow = (() => {
 
     const playerInfo = document.forms['player-input'];
     playerInfo.classList.remove('hidden');
-    let alerts = document.getElementById('alerts');
+    const alerts = document.getElementById('alerts');
     alerts.innerHTML = '';
 
     const container = document.getElementById('container');
@@ -137,13 +135,13 @@ const gameFlow = (() => {
     container.removeChild(board);
     gameboard.render();
     return (gameboard.playArea, players);
-  }
+  };
 
   const getEvents = () => {
     const boardElements = document.getElementById('board').children;
     const boardArray = Array.from(boardElements);
-    boardArray.forEach(elem => {
-      const clickEvent = function () {
+    boardArray.forEach((elem => {
+      const clickEvent = () => {
         currentPlayer(players);
         elem.innerHTML = `${currentPlayer(players).symbol}`;
         gameboard.updateBoard(elem.id, currentPlayer(players).symbol);
@@ -168,7 +166,7 @@ const gameFlow = (() => {
       if (elem.innerHTML == '') {
         elem.addEventListener('click', clickEvent, false);
       }
-    });
+    }));
   }
   const getPlayerInfo = () => {
 

@@ -91,7 +91,7 @@ const gameFlow = (() => {
     for (let i = 0; i < finalX.length; i += 1) {
       if (finalX[i].length === 3) {
         return true;
-      } 
+      }
       if (finalO[i].length === 3) {
         return true;
       }

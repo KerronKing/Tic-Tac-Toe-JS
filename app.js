@@ -1,75 +1,79 @@
 // Global Array to store player objects
 let players = [];
 
+// Player object
+const Player = (name, symbol, moveNumber) => {
+  return { name, symbol, moveNumber }
+};
+
 // Game-board module
 const gameboard = (() => {
-  let playArea = [
-    ["", "", ""],
-    ["", "", ""],
-    ["", "", ""]
+  const playArea = [
+    ['', '', ''],
+    ['', '', ''],
+    ['', '', ''],
   ];
 
   const render = () => {
     const container = document.getElementById('container');
-    let div = document.createElement('DIV');
-    div.id = "board";
+    const div = document.createElement('DIV');
+    div.id = 'board';
     container.appendChild(div);
 
-    let counter = 9;
-    for (let i = 0; i < counter; i++) {
-      let innerDiv = document.createElement('DIV');
+    const counter = 9;
+    for (let i = 0; i < counter; i += 1) {
+      const innerDiv = document.createElement('DIV');
       innerDiv.classList.add('space');
       innerDiv.id = `space-${i}`;
       div.appendChild(innerDiv);
     }
-  }
+  };
 
   const updateBoard = (id, symbol) => {
     switch (id) {
-      case "space-1":
+      case 'space-1':
         playArea[0][0] = symbol;
         break;
-      case "space-2":
+      case 'space-2':
         playArea[0][1] = symbol;
         break;
-      case "space-3":
+      case 'space-3':
         playArea[0][2] = symbol;
         break;
-      case "space-4":
+      case 'space-4':
         playArea[1][0] = symbol;
         break;
-      case "space-5":
+      case 'space-5':
         playArea[1][1] = symbol;
         break;
-      case "space-6":
+      case 'space-6':
         playArea[1][2] = symbol;
         break;
-      case "space-7":
+      case 'space-7':
         playArea[2][0] = symbol;
         break;
-      case "space-8":
+      case 'space-8':
         playArea[2][1] = symbol;
         break;
-      case "space-9":
+      case 'space-9':
         playArea[2][2] = symbol;
         break;
+      default:
     }
-  }
+  };
   return { playArea, updateBoard, render };
 })();
 
 // Game-flow module
 const gameFlow = (() => {
-
   const addPlayer = (name1, name2) => {
+    const obj1 = Player(name1, 'X', 1);
+    const obj2 = Player(name2, 'O', 0);
+      players.unshift(obj1, obj2);
 
-  const obj1 = Player(name1, 'X', 1);
-  const obj2 = Player(name2, 'O', 0);
-    players.unshift(obj1, obj2);
-
-    if (players.length >= 2) {
-      players.length = 2;
-    }
+      if (players.length >= 2) {
+        players.length = 2;
+      }
   };
 
   const gameWon = () => {
@@ -83,8 +87,8 @@ const gameFlow = (() => {
       [gameboard.playArea[0][0], gameboard.playArea[1][1], gameboard.playArea[2][2]],
       [gameboard.playArea[0][2], gameboard.playArea[1][1], gameboard.playArea[2][0]]
     ]
-    let finalX = winningPositions.map(elem => elem.filter(x => x == "X"));
-    let finalO = winningPositions.map(elem => elem.filter(x => x == "O"));
+    let finalX = winningPositions.map(elem => elem.filter(x => x == 'X'));
+    let finalO = winningPositions.map(elem => elem.filter(x => x == 'O'));
 
     for (let i = 0; i < finalX.length; i++) {
       if (finalX[i].length == 3) {
@@ -101,7 +105,7 @@ const gameFlow = (() => {
     const boardElements = document.getElementById('board').children;
     const boardArray = Array.from(boardElements);
     boardArray.forEach(elem => {
-      if (elem.innerHTML != "") {
+      if (elem.innerHTML != '') {
         counter++;
       }
     })
@@ -156,12 +160,12 @@ const gameFlow = (() => {
           players = [];
         } else if (gameDrawn()) {
           let alerts = document.getElementById('alerts');
-          alerts.innerHTML = "It's a drawn game!";
+          alerts.innerHTML = 'It\'s a drawn game!';
         } else {
           alerts.innerHTML = `${currentPlayer(players).name}'s turn`;
         }
       }
-      if (elem.innerHTML == "") {
+      if (elem.innerHTML == '') {
         elem.addEventListener('click', clickEvent, false);
       }
     });
@@ -192,10 +196,7 @@ const gameFlow = (() => {
   return {getPlayerInfo, resetGame};
 })();
 
-// Player object
-const Player = (name, symbol, moveNumber) => {
-  return { name, symbol, moveNumber }
-};
+
 
 // Start/Re-start button
 
@@ -216,7 +217,7 @@ const startGame = () => {
 });
 }
 const commence = () => {
-  if (starter.textContent == "Start Game") {
+  if (starter.textContent == 'Start Game') {
     starter.addEventListener('click', startGame, false);
   }
 }

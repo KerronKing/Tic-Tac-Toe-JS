@@ -1,5 +1,6 @@
 // Global Array to store player objects
-let players = [{name: "default", symbol:"?", moveNumber: 0}];
+// let players = [{name: "default", symbol:"?", moveNumber: 0}];
+let players = [];
 
 // Game-board module
 const gameboard = (() => {
@@ -51,6 +52,10 @@ const gameFlow = (() => {
   const obj1 = Player(name1, 'X', 1);
   const obj2 = Player(name2, 'O', 0);
     players.unshift(obj1, obj2);
+
+    if (players.length >= 2) {
+      players.length = 2;
+    }
   };
 
   const gameWon = () => {
@@ -73,7 +78,7 @@ const gameFlow = (() => {
       } else if (finalO[i].length == 3) {
         return true;
       }
-    }  
+    }
   return false;
   }
 
@@ -93,19 +98,21 @@ const gameFlow = (() => {
   }
 
   const resetGame = () => {
-    let players = [{name: "default", symbol:"?", moveNumber: 0}];
+    players.splice(0, players.length);
     let playArea = [
       ["", "", ""],
       ["", "", ""],
       ["", "", ""]
     ];
+    const playerInfo = document.forms['player-input'];
+    playerInfo.classList.remove('hidden');
 
     const boardElements = document.getElementById('board').children;
     const boardArray = Array.from(boardElements);
 
     boardArray.forEach(elem => {
       elem.innerHTML = "";
-      elem.removeEventListener('click', clickEvent, false);
+      // elem.removeEventListener('click', clickEvent, false);
     })
     return [playArea, players];
   }
@@ -146,6 +153,7 @@ const gameFlow = (() => {
     addPlayer(data['name-1'], data['name-2']);
     getEvents();
     playerInfo.reset();
+    playerInfo.classList.add('hidden');
     });
   };
 
@@ -179,17 +187,20 @@ const startGame = () => {
   board.classList.remove('hidden');
   starter.textContent = 'Restart Game';
   starter.removeEventListener('click', startGame, false);
+  console.log('new game');
+  starter.addEventListener('click', () => {
+  gameFlow.resetGame();
+});
 }
-
 const commence = () => {
   if (starter.textContent == "Start Game") {
     starter.addEventListener('click', startGame, false);
-  } else {
-    console.log('button was clicked');
-    starter.addEventListener('click', () => {
-      gameFlow.resetGame();
-      console.log('game reset, maybe?');
-    });
+      // } else {
+      //   console.log('button was clicked');
+      //   starter.addEventListener('click', () => {
+      //     gameFlow.resetGame();
+      //     console.log('game reset, maybe?');
+    // });
   }
 }
 

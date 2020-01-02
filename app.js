@@ -1,10 +1,7 @@
-// Global Array to store player objects
 let players = [];
 
-// Player object
 const Player = (name, symbol, moveNumber) => ({ name, symbol, moveNumber });
 
-// Game-board module
 const gameboard = (() => {
   const playArea = [
     ['', '', ''],
@@ -62,7 +59,6 @@ const gameboard = (() => {
   return { playArea, updateBoard, render };
 })();
 
-// Game-flow module
 const gameFlow = (() => {
   const addPlayer = (name1, name2) => {
     const obj1 = Player(name1, 'X', 1);
@@ -190,8 +186,6 @@ const gameFlow = (() => {
   };
   return { getPlayerInfo, resetGame };
 })();
-
-// Start/Re-start button
 
 const starter = document.getElementById('starter');
 starter.textContent = 'Start Game';

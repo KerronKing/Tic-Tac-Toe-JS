@@ -19,7 +19,7 @@ const gameboard = (() => {
     container.appendChild(div);
 
     const counter = 9;
-    for (let i = 0; i < counter; i += 1) {
+    for (let i = 1; i <= counter; i += 1) {
       const innerDiv = document.createElement('DIV');
       innerDiv.classList.add('space');
       innerDiv.id = `space-${i}`;
@@ -102,11 +102,11 @@ const gameFlow = (() => {
     let counter = 0;
     const boardElements = document.getElementById('board').children;
     const boardArray = Array.from(boardElements);
-    boardArray.forEach((elem => {
+    boardArray.forEach((elem) => {
       if (elem.innerHTML !== '') {
         counter += 1;
       }
-    }));
+    });
     if ((counter === 9) && !gameWon()) {
       return true;
     }
@@ -137,50 +137,6 @@ const gameFlow = (() => {
     return (gameboard.playArea, players);
   };
 
-  const getEvents = () => {
-    const boardElements = document.getElementById('board').children;
-    const boardArray = Array.from(boardElements);
-    boardArray.forEach((elem => {
-      const clickEvent = () => {
-        currentPlayer(players);
-        elem.innerHTML = `${currentPlayer(players).symbol}`;
-        gameboard.updateBoard(elem.id, currentPlayer(players).symbol);
-        console.log(gameboard.playArea);
-        elem.removeEventListener('click', clickEvent, false);
-        players[0].moveNumber++;
-        players[1].moveNumber++;
-        console.log(gameDrawn());
-        if (gameWon()) {
-          players[0].moveNumber--;
-          players[1].moveNumber--;
-          let alerts = document.getElementById('alerts');
-          alerts.innerHTML = `${currentPlayer(players).name} is the winner`;
-          players = [];
-        } else if (gameDrawn()) {
-          let alerts = document.getElementById('alerts');
-          alerts.innerHTML = 'It\'s a drawn game!';
-        } else {
-          alerts.innerHTML = `${currentPlayer(players).name}'s turn`;
-        }
-      }
-      if (elem.innerHTML == '') {
-        elem.addEventListener('click', clickEvent, false);
-      }
-    }));
-  }
-  const getPlayerInfo = () => {
-
-    const playerInfo = document.forms['player-input'];
-    playerInfo.addEventListener('submit', function(e){
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(playerInfo).entries());
-    addPlayer(data['name-1'], data['name-2']);
-    getEvents();
-    playerInfo.reset();
-    playerInfo.classList.add('hidden');
-    });
-  };
-
   const currentPlayer = (array) => {
     var playerOne = array[0];
 
@@ -189,12 +145,50 @@ const gameFlow = (() => {
     } else {
       return Object.assign({}, array[1]);
     };
-  }
+  };
 
+  const getEvents = () => {
+    const boardElements = document.getElementById('board').children;
+    const boardArray = Array.from(boardElements);
+    boardArray.forEach((elem) => {
+      const clickEvent = () => {
+        currentPlayer(players);
+        elem.innerHTML = `${currentPlayer(players).symbol}`;
+        gameboard.updateBoard(elem.id, currentPlayer(players).symbol);
+        elem.removeEventListener('click', clickEvent, false);
+        players[0].moveNumber += 1;
+        players[1].moveNumber += 1;
+        if (gameWon()) {
+          players[0].moveNumber -= 1;
+          players[1].moveNumber -= 1;
+          const alerts = document.getElementById('alerts');
+          alerts.innerHTML = `${currentPlayer(players).name} is the winner`;
+          players = [];
+        } else if (gameDrawn()) {
+          const alerts = document.getElementById('alerts');
+          alerts.innerHTML = 'It\'s a drawn game!';
+        } else {
+          alerts.innerHTML = `${currentPlayer(players).name}'s turn`;
+        }
+      }
+      if (elem.innerHTML == '') {
+        elem.addEventListener('click', clickEvent, false);
+      }
+    });
+  };
+  const getPlayerInfo = () => {
+    const playerInfo = document.forms['player-input'];
+    playerInfo.addEventListener('submit', ((e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(playerInfo).entries());
+      addPlayer(data['name-1'], data['name-2']);
+      getEvents();
+      playerInfo.reset();
+      playerInfo.classList.add('hidden');
+    }));
+  };
   return {getPlayerInfo, resetGame};
 })();
-
-
 
 // Start/Re-start button
 
@@ -209,16 +203,14 @@ const startGame = () => {
   board.classList.remove('hidden');
   starter.textContent = 'Restart Game';
   starter.removeEventListener('click', startGame, false);
-  console.log('new game');
   starter.addEventListener('click', () => {
-  gameFlow.resetGame();
-});
+    gameFlow.resetGame();
+  });
 }
 const commence = () => {
-  if (starter.textContent == 'Start Game') {
+  if (starter.textContent === 'Start Game') {
     starter.addEventListener('click', startGame, false);
   }
 }
-
 commence();
 gameFlow.getPlayerInfo();

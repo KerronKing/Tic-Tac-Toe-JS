@@ -149,6 +149,8 @@ const gameFlow = (() => {
         players[1].moveNumber++;
         console.log(gameDrawn());
         if (gameWon()) {
+          players[0].moveNumber--;
+          players[1].moveNumber--;
           let alerts = document.getElementById('alerts');
           alerts.innerHTML = `${currentPlayer(players).name} is the winner`;
         } else if (gameDrawn()) {

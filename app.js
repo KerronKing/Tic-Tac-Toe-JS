@@ -153,6 +153,7 @@ const gameFlow = (() => {
           players[1].moveNumber--;
           let alerts = document.getElementById('alerts');
           alerts.innerHTML = `${currentPlayer(players).name} is the winner`;
+          players = [];
         } else if (gameDrawn()) {
           let alerts = document.getElementById('alerts');
           alerts.innerHTML = "It's a drawn game!";

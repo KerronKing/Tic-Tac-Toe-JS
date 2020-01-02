@@ -7,10 +7,30 @@ h1{
   padding: 30px;
 }
 
-.hidden { visibility: hidden; }
+.button {
+  padding: 8px;
+  margin: 12px;
+  background-color: teal;
+  color: white;
+  border: 0px;
+  border-radius: 7px;
+  width: 150px;
+}
+
+.hidden {
+  visibility: hidden;
+  height: 0;
+  width: 0;
+}
 
 #player-input {
   margin-bottom: 80px;
+}
+
+#player-input input {
+  padding: 8px;
+  border-radius: 7px;
+  margin: 12px;
 }
 
 #board {
@@ -26,8 +46,10 @@ h1{
 .space {
   width: 100%;
   height: 200px;
-  /* text-align: center;
-  float: left; */
+  text-align: center;
+  font-size: 200px;
+  vertical-align: middle;
+  line-height: 1;
 }
 
 .space:hover {
@@ -80,4 +102,10 @@ h1{
 
 #space-9 {
   grid-area: 3 / 3 / 4 / 4;
+}
+
+#alerts {
+  font-size: 30px;
+  font-weight: bold;
+  padding-bottom: 100px;
 }

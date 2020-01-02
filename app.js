@@ -98,14 +98,22 @@ const gameFlow = (() => {
   }
 
   const resetGame = () => {
-    players.splice(0, players.length);
-    let playArea = [
-      ["", "", ""],
-      ["", "", ""],
-      ["", "", ""]
-    ];
+    players = [];
+    gameboard.playArea.splice(0, gameboard.playArea.length);
+        // gameboard.playArea[0][0] = '';
+        // gameboard.playArea[0][1] = '';
+        // gameboard.playArea[0][2] = '';
+        // gameboard.playArea[1][0] = '';
+        // gameboard.playArea[1][1] = '';
+        // gameboard.playArea[1][2] = '';
+        // gameboard.playArea[2][0] = '';
+        // gameboard.playArea[2][1] = '';
+        // gameboard.playArea[2][2] = '';
+
     const playerInfo = document.forms['player-input'];
     playerInfo.classList.remove('hidden');
+    let alerts = document.getElementById('alerts');
+    alerts.innerHTML = '';
 
     const boardElements = document.getElementById('board').children;
     const boardArray = Array.from(boardElements);
@@ -114,7 +122,7 @@ const gameFlow = (() => {
       elem.innerHTML = "";
       // elem.removeEventListener('click', clickEvent, false);
     })
-    return [playArea, players];
+    return (gameboard.playArea, players);
   }
 
   const getEvents = () => {
@@ -125,6 +133,7 @@ const gameFlow = (() => {
         currentPlayer(players);
         elem.innerHTML = `${currentPlayer(players).symbol}`;
         gameboard.updateBoard(elem.id, currentPlayer(players).symbol);
+        console.log(gameboard.playArea);
         elem.removeEventListener('click', clickEvent, false);
         players[0].moveNumber++;
         players[1].moveNumber++;

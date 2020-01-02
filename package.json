@@ -1,0 +1,25 @@
+{
+  "name": "tic-tac-toe-js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KerronKing/Tic-Tac-Toe-JS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KerronKing/Tic-Tac-Toe-JS/issues"
+  },
+  "homepage": "https://github.com/KerronKing/Tic-Tac-Toe-JS#readme"
+}

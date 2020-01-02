@@ -7,6 +7,8 @@ h1{
   padding: 30px;
 }
 
+.hidden { visibility: hidden; }
+
 #player-input {
   margin-bottom: 80px;
 }

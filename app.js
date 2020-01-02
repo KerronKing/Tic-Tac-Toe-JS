@@ -1,6 +1,28 @@
 // Global Array to store player objects
 let players = [{name: "default", symbol:"?", moveNumber: 0}];
 
+// Start/Re-start button
+
+const starter = document.getElementById('starter');
+starter.textContent = 'Start Game';
+
+if (!starter.clicked) {
+  starter.addEventListener('click', () => {
+    const input = document.getElementById('input');
+    const board = document.getElementById('board');
+    input.classList.remove('hidden');
+    board.classList.remove('hidden');
+    starter.textContent = 'Restart Game';
+  })
+} else {
+  starter.addEventListener('click', () => {
+
+  })
+}
+
+
+
+
 // Game-board module
 const gameboard = (() => {
   let playArea = [

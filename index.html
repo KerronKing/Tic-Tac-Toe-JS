@@ -13,7 +13,8 @@
   <body>
     <div class="container">
       <h1>Tic-Tac-Toe</h1>
-      <div>
+      <button id="starter" class="start-game"></button>
+      <div id="input" class="hidden">
         <form id="player-input" name="player-input">
           <input type="text" placeholder="Enter your name Player 1" id="input-1" name="name-1">
           <input type="text" placeholder="Enter your name Player 2" id="input-2" name="name-2">
@@ -21,7 +22,7 @@
         </form>
       </div>
       <div id="alerts"></div>
-      <div id="board">
+      <div id="board" class="hidden">
 
         <div class="space" id="space-1"></div>
         <div class="space" id="space-2"></div>

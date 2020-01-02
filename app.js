@@ -91,7 +91,8 @@ const gameFlow = (() => {
     for (let i = 0; i < finalX.length; i += 1) {
       if (finalX[i].length === 3) {
         return true;
-      } else if (finalO[i].length === 3) {
+      } 
+      if (finalO[i].length === 3) {
         return true;
       }
     }
@@ -138,13 +139,12 @@ const gameFlow = (() => {
   };
 
   const currentPlayer = (array) => {
-    var playerOne = array[0];
+    const playerOne = array[0];
 
-    if (playerOne.moveNumber % 2 == 1) {
+    if (playerOne.moveNumber % 2 === 1) {
       return Object.assign({}, array[0]);
-    } else {
-      return Object.assign({}, array[1]);
-    };
+    }
+    return Object.assign({}, array[1]);
   };
 
   const getEvents = () => {
@@ -168,10 +168,11 @@ const gameFlow = (() => {
           const alerts = document.getElementById('alerts');
           alerts.innerHTML = 'It\'s a drawn game!';
         } else {
+          const alerts = document.getElementById('alerts');
           alerts.innerHTML = `${currentPlayer(players).name}'s turn`;
         }
-      }
-      if (elem.innerHTML == '') {
+      };
+      if (elem.innerHTML === '') {
         elem.addEventListener('click', clickEvent, false);
       }
     });
@@ -187,7 +188,7 @@ const gameFlow = (() => {
       playerInfo.classList.add('hidden');
     }));
   };
-  return {getPlayerInfo, resetGame};
+  return { getPlayerInfo, resetGame };
 })();
 
 // Start/Re-start button
@@ -206,11 +207,11 @@ const startGame = () => {
   starter.addEventListener('click', () => {
     gameFlow.resetGame();
   });
-}
+};
 const commence = () => {
   if (starter.textContent === 'Start Game') {
     starter.addEventListener('click', startGame, false);
   }
-}
+};
 commence();
 gameFlow.getPlayerInfo();

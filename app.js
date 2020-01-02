@@ -1,5 +1,4 @@
 // Global Array to store player objects
-// let players = [{name: "default", symbol:"?", moveNumber: 0}];
 let players = [];
 
 // Game-board module
@@ -9,6 +8,21 @@ const gameboard = (() => {
     ["", "", ""],
     ["", "", ""]
   ];
+
+  const render = () => {
+    const container = document.getElementById('container');
+    let div = document.createElement('DIV');
+    div.id = "board";
+    container.appendChild(div);
+
+    let counter = 9;
+    for (let i = 0; i < counter; i++) {
+      let innerDiv = document.createElement('DIV');
+      innerDiv.classList.add('space');
+      innerDiv.id = `space-${i}`;
+      div.appendChild(innerDiv);
+    }
+  }
 
   const updateBoard = (id, symbol) => {
     switch (id) {
@@ -41,7 +55,7 @@ const gameboard = (() => {
         break;
     }
   }
-  return { playArea, updateBoard };
+  return { playArea, updateBoard, render };
 })();
 
 // Game-flow module
@@ -99,29 +113,25 @@ const gameFlow = (() => {
 
   const resetGame = () => {
     players = [];
-    gameboard.playArea.splice(0, gameboard.playArea.length);
-        // gameboard.playArea[0][0] = '';
-        // gameboard.playArea[0][1] = '';
-        // gameboard.playArea[0][2] = '';
-        // gameboard.playArea[1][0] = '';
-        // gameboard.playArea[1][1] = '';
-        // gameboard.playArea[1][2] = '';
-        // gameboard.playArea[2][0] = '';
-        // gameboard.playArea[2][1] = '';
-        // gameboard.playArea[2][2] = '';
+    gameboard.playArea[0][0] = '';
+    gameboard.playArea[0][1] = '';
+    gameboard.playArea[0][2] = '';
+    gameboard.playArea[1][0] = '';
+    gameboard.playArea[1][1] = '';
+    gameboard.playArea[1][2] = '';
+    gameboard.playArea[2][0] = '';
+    gameboard.playArea[2][1] = '';
+    gameboard.playArea[2][2] = '';
 
     const playerInfo = document.forms['player-input'];
     playerInfo.classList.remove('hidden');
     let alerts = document.getElementById('alerts');
     alerts.innerHTML = '';
 
-    const boardElements = document.getElementById('board').children;
-    const boardArray = Array.from(boardElements);
-
-    boardArray.forEach(elem => {
-      elem.innerHTML = "";
-      // elem.removeEventListener('click', clickEvent, false);
-    })
+    const container = document.getElementById('container');
+    const board = document.getElementById('board');
+    container.removeChild(board);
+    gameboard.render();
     return (gameboard.playArea, players);
   }
 
@@ -190,6 +200,7 @@ const starter = document.getElementById('starter');
 starter.textContent = 'Start Game';
 
 const startGame = () => {
+  gameboard.render();
   const input = document.getElementById('input');
   const board = document.getElementById('board');
   input.classList.remove('hidden');
@@ -204,12 +215,6 @@ const startGame = () => {
 const commence = () => {
   if (starter.textContent == "Start Game") {
     starter.addEventListener('click', startGame, false);
-      // } else {
-      //   console.log('button was clicked');
-      //   starter.addEventListener('click', () => {
-      //     gameFlow.resetGame();
-      //     console.log('game reset, maybe?');
-    // });
   }
 }
 

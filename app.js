@@ -3,7 +3,7 @@
 const Player = (name, symbol, moveNumber) => ({ name, symbol, moveNumber });
 
 const gameboard = (() => {
-  let players = [];
+  const players = [];
 
   const playArea = [
     ['', '', ''],

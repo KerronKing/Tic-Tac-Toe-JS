@@ -58,7 +58,9 @@ const gameboard = (() => {
       default:
     }
   };
-  return { playArea, updateBoard, render, players };
+  return { 
+    playArea, updateBoard, render, players 
+  };
 })();
 
 const gameFlow = (() => {

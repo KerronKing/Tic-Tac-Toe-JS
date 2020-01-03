@@ -1,8 +1,10 @@
-let players = [];
+
 
 const Player = (name, symbol, moveNumber) => ({ name, symbol, moveNumber });
 
 const gameboard = (() => {
+  let players = [];
+
   const playArea = [
     ['', '', ''],
     ['', '', ''],
@@ -56,17 +58,17 @@ const gameboard = (() => {
       default:
     }
   };
-  return { playArea, updateBoard, render };
+  return { playArea, updateBoard, render, players };
 })();
 
 const gameFlow = (() => {
   const addPlayer = (name1, name2) => {
     const obj1 = Player(name1, 'X', 1);
     const obj2 = Player(name2, 'O', 0);
-    players.unshift(obj1, obj2);
+    gameboard.players.unshift(obj1, obj2);
 
-    if (players.length >= 2) {
-      players.length = 2;
+    if (gameboard.players.length >= 2) {
+      gameboard.players.length = 2;
     }
   };
 
@@ -111,7 +113,7 @@ const gameFlow = (() => {
   };
 
   const resetGame = () => {
-    players = [];
+    gameboard.players = [];
     gameboard.playArea[0][0] = '';
     gameboard.playArea[0][1] = '';
     gameboard.playArea[0][2] = '';
@@ -131,7 +133,7 @@ const gameFlow = (() => {
     const board = document.getElementById('board');
     container.removeChild(board);
     gameboard.render();
-    return (gameboard.playArea, players);
+    return (gameboard.playArea, gameboard.players);
   };
 
   const currentPlayer = (array) => {
@@ -148,24 +150,24 @@ const gameFlow = (() => {
     const boardArray = Array.from(boardElements);
     boardArray.forEach((elem) => {
       const clickEvent = () => {
-        currentPlayer(players);
-        elem.innerHTML = `${currentPlayer(players).symbol}`;
-        gameboard.updateBoard(elem.id, currentPlayer(players).symbol);
+        currentPlayer(gameboard.players);
+        elem.innerHTML = `${currentPlayer(gameboard.players).symbol}`;
+        gameboard.updateBoard(elem.id, currentPlayer(gameboard.players).symbol);
         elem.removeEventListener('click', clickEvent, false);
-        players[0].moveNumber += 1;
-        players[1].moveNumber += 1;
+        gameboard.players[0].moveNumber += 1;
+        gameboard.players[1].moveNumber += 1;
         if (gameWon()) {
-          players[0].moveNumber -= 1;
-          players[1].moveNumber -= 1;
+          gameboard.players[0].moveNumber -= 1;
+          gameboard.players[1].moveNumber -= 1;
           const alerts = document.getElementById('alerts');
-          alerts.innerHTML = `${currentPlayer(players).name} is the winner`;
-          players = [];
+          alerts.innerHTML = `${currentPlayer(gameboard.players).name} is the winner`;
+          gameboard.players = [];
         } else if (gameDrawn()) {
           const alerts = document.getElementById('alerts');
           alerts.innerHTML = 'It\'s a drawn game!';
         } else {
           const alerts = document.getElementById('alerts');
-          alerts.innerHTML = `${currentPlayer(players).name}'s turn`;
+          alerts.innerHTML = `${currentPlayer(gameboard.players).name}'s turn`;
         }
       };
       if (elem.innerHTML === '') {

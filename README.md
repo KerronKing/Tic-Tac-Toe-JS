@@ -4,7 +4,7 @@ The aim of this project was to build a Tic Tac Toe game that renders directly in
 
 ### Live Link
 
-To see the live version of the page, click [here](https://rawcdn.githack.com/KerronKing/Tic-Tac-Toe-JS/eaad087f02706ac7fe913d90d2dcc98f2811a4bb/index.html).
+To see the live version of the page, click [here](https://rawcdn.githack.com/KerronKing/Tic-Tac-Toe-JS/a10d2ed4571c6da2585b6cb7cbcfe8ab519a1f1f/index.html).
 
 ### How to Use
 
